@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gallery - Beauty Pride of the East</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Lightbox CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css" rel="stylesheet">
+  
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff9f6;
+      color: #333;
+    }
+
+    .gallery-container {
+      max-width: 1400px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .gallery-title {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #b3546d;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.08);
+    }
+
+    .gallery-item::after {
+      content: attr(data-title);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 10px;
+      font-size: 1.1rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: all 0.4s ease;
+    }
+
+    .gallery-item:hover::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media screen and (max-width: 600px) {
+      .gallery-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="gallery-container">
+    <h1 class="gallery-title">Beauty Pride of the East</h1>
+    
+    <div class="gallery-grid">
+      <!-- Image 1 -->
+      <a href="/images/gallery1.jpg" data-lightbox="gallery" class="gallery-item" data-title="Contestant Zara">
+        <img src="/public/images/6ec4ff30-0d1c-4757-9cb5-17460a5d8cf5.jpg" alt="Zara">
+      </a>
+
+      <!-- Image 2 -->
+      <a href="/images/gallery2.jpg" data-lightbox="gallery" class="gallery-item" data-title="Contestant Ada">
+        <img src="/public/images/banner4.jpg" alt="Ada">
+      </a>
+
+      <!-- Image 3 -->
+      <a href="/images/gallery3.jpg" data-lightbox="gallery" class="gallery-item" data-title="Contestant Nnenna">
+        <img src="/public/images/banner4.jpg" alt="Nnenna">
+      </a>
+
+      <!-- Image 4 -->
+      <a href="/images/gallery4.jpg" data-lightbox="gallery" class="gallery-item" data-title="Cultural Parade">
+        <img src="/public/images/e65c5723-825c-4adf-b33e-7abeb5f83d65.jpg" alt="Cultural Parade">
+      </a>
+
+      <!-- Add more images as needed -->
+    </div>
+  </div>
+
+  <!-- Lightbox JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox-plus-jquery.min.js"></script>
+
+</body>
+</html>

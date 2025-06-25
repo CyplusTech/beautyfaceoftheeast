@@ -1,0 +1,76 @@
+<section id="contestant-header">
+  <h1>Meet Our Contestants</h1>
+
+  <div class="contestants-grid">
+    <% if (userDB.length > 0) { %>
+      <% userDB.forEach(data => { %>
+        <div class="contestant-card">
+          <div class="card-image-wrapper">
+            <img src="images/amaka-okafor.jpg" alt="<%= data.firstName %> <%= data.lastName %>" class="contestant-image" />
+          </div>
+          <div class="contestant-details">
+        <div class="serial-id">Contestant ID: <%= data.serialId || data._id %></div>
+            <h3><%= data.fullName %></h3>
+            <div class="votes-badge">Votes: <%= data.votes %></div>
+            <a href="/contestant/single/<%= data._id %>" class="view-profile-btn">View Profile</a>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p style="text-align: center; font-weight: bold;">No contestants found.</p>
+    <% } %>
+  </div>
+
+  <!-- Show "View All Contestants" button ONLY on the homepage -->
+  <% if (isHomePage) { %>
+    <div class="view-all-btn-wrapper" style="text-align: center; margin-top: 20px;">
+      <a href="/contestants" class="view-all-btn">View All Contestants</a>
+    </div>
+  <% } %>
+
+  <!-- Always show pagination on /contestants page -->
+  <% if (!isHomePage) { %>
+    <div class="pagination">
+
+      <!-- Prev Button -->
+      <% if (currentPage > 1) { %>
+        <a href="?page=<%= currentPage - 1 %>" class="page-link">« Prev</a>
+      <% } else { %>
+        <span class="page-link disabled">« Prev</span>
+      <% } %>
+
+      <!-- First page and leading ellipsis -->
+      <% if (totalPages > 5 && currentPage > 3) { %>
+        <a href="?page=1" class="page-link">1</a>
+        <% if (currentPage > 4) { %>
+          <span class="page-link disabled">...</span>
+        <% } %>
+      <% } %>
+
+      <!-- Page numbers around current -->
+      <% for (let i = currentPage - 2; i <= currentPage + 2; i++) {
+           if (i > 0 && i <= totalPages) { %>
+        <% if (i === currentPage) { %>
+          <span class="page-link active"><%= i %></span>
+        <% } else { %>
+          <a href="?page=<%= i %>" class="page-link"><%= i %></a>
+        <% } %>
+      <% }} %>
+
+      <!-- Trailing ellipsis and last page -->
+      <% if (totalPages > 5 && currentPage < totalPages - 2) { %>
+        <% if (currentPage < totalPages - 3) { %>
+          <span class="page-link disabled">...</span>
+        <% } %>
+        <a href="?page=<%= totalPages %>" class="page-link"><%= totalPages %></a>
+      <% } %>
+
+      <!-- Next Button -->
+      <% if (currentPage < totalPages) { %>
+        <a href="?page=<%= currentPage + 1 %>" class="page-link">Next »</a>
+      <% } else { %>
+        <span class="page-link disabled">Next »</span>
+      <% } %>
+    </div>
+  <% } %>
+</section>

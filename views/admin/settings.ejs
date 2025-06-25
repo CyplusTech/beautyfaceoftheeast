@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin Settings - Pageantry</title>
+<link rel="stylesheet" href="/style/admin/admin-nav.css">
+
+
+<style>
+  body.settings-body {
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    margin: 0;
+    transition: background 0.5s;
+    position: relative;
+    background: #f4f6f9;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  h4.center-align {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #ff5733;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+    z-index: 999;
+  }
+
+  .back-btn:hover {
+    background: #c70039;
+  }
+
+  .collapsible {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .collapsible li {
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .collapsible-header {
+    background: #007bff;
+    color: white;
+    padding: 15px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    transition: background 0.3s ease-in-out;
+  }
+
+  .collapsible-header:hover {
+    background: #0056b3;
+  }
+
+  .collapsible-body {
+    background: #f8f9fa;
+    padding: 0 20px;
+    border-radius: 0 0 10px 10px;
+    max-height: 0;
+    overflow: hidden;
+    font-size: 14px;
+    transition: max-height 0.5s ease, padding 0.5s ease;
+  }
+
+  .collapsible-body.show {
+    max-height: 600px;
+    padding: 20px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="file"],
+  textarea,
+  select {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 12px;
+    width: 100%;
+    margin-top: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  label {
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-top: 15px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .toggle-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 20px;
+  }
+
+  .toggle-label input[type="checkbox"] {
+    appearance: none;
+    width: 50px;
+    height: 26px;
+    background: #ccc;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .toggle-label input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background: white;
+    transition: transform 0.3s ease;
+  }
+
+  .toggle-label input[type="checkbox"]:checked {
+    background: #28a745;
+  }
+
+  .toggle-label input[type="checkbox"]:checked::before {
+    transform: translateX(24px);
+  }
+
+  .btn {
+    width: 100%;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+  }
+
+  .btn:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: scale(1.05);
+  }
+
+  #message .alert {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    position: relative;
+  }
+
+  #message .alert.success {
+    background-color: #4CAF50;
+  }
+
+  #message .alert.error {
+    background-color: #d9534f;
+  }
+
+  #message .alert button {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  #logoPreview {
+    max-width: 100px;
+    margin-top: 10px;
+    display: block;
+    border-radius: 5px;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 15px;
+    }
+
+    .collapsible-header {
+      font-size: 16px;
+      padding: 12px;
+    }
+
+    input,
+    select,
+    textarea {
+      font-size: 15px;
+    }
+
+    .btn {
+      font-size: 16px;
+      padding: 12px;
+    }
+
+    #logoPreview {
+      max-width: 80px;
+    }
+
+    body.settings-body {
+      padding: 10px;
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .collapsible-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .toggle-label {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .btn {
+      font-size: 15px;
+      padding: 10px;
+    }
+  }
+</style>
+
+<!-- Google Material Icons CDN -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+</head>
+<body class="settings-body">
+      <!-- /////////navigation section //////// -->
+      <%-include("../partials/admin-navbar")%>
+
+<div class="container" role="main">
+  <h4 class="center-align">Admin Settings</h4>
+  <form id="adminSettingsForm" enctype="multipart/form-data" novalidate>
+    <ul class="collapsible" id="collapsible" role="list">
+      <!-- General Settings -->
+      <li>
+        <div class="collapsible-header" tabindex="0" role="button" aria-expanded="false" aria-controls="generalSettings">
+          <span class="material-icons" aria-hidden="true">settings</span> General Settings
+        </div>
+        <div class="collapsible-body" id="generalSettings" role="region" aria-labelledby="generalSettingsHeader">
+          <label for="siteName">Site Name:</label>
+          <input type="text" id="siteName" name="siteName" value="<%= settings?.siteName || '' %>" required />
+
+          <label for="siteDescription">Description:</label>
+          <textarea id="siteDescription" name="siteDescription" required><%= settings?.siteDescription || '' %></textarea>
+
+          <label for="siteLogo">Logo:</label>
+          <input type="file" id="siteLogo" name="siteLogo" onchange="previewLogo(event)" accept="image/*" />
+          <% if (settings?.siteLogo) { 
+            const logoFileName = settings.siteLogo.split('/').pop(); %>
+            <p>Current Logo File: <%= logoFileName %></p>
+            <img id="logoPreview" src="<%= settings.siteLogo %>" alt="Logo Preview" />
+          <% } else { %>
+            <img id="logoPreview" alt="Logo Preview" style="display:none" />
+          <% } %>
+
+          <label>
+            <label class="toggle-label" for="enableWebsite">
+              <input type="checkbox" id="enableWebsite" name="enableWebsite" <%= settings.enableWebsite ? 'checked' : '' %> />
+              Enable Website
+            </label>
+        </div>
+      </li>
+
+      <!-- Voting Settings -->
+      <li>
+        <div class="collapsible-header" tabindex="0" role="button" aria-expanded="false" aria-controls="votingSettings">
+          <span class="material-icons" aria-hidden="true">how_to_vote</span> Voting Settings
+        </div>
+        <div class="collapsible-body" id="votingSettings" role="region" aria-labelledby="votingSettingsHeader">
+          <label for="votePrice">Price per Vote:</label>
+          <input type="number" id="votePrice" name="pricePerVote" value="<%= settings.pricePerVote %>" required />
+
+          <label for="maxVotesPerPerson">Max Votes per User:</label>
+          <input type="number" id="maxVotesPerPerson" name="maxVotesPerPerson" value="<%= settings.maxVotesPerPerson %>" required />
+
+          <label for="minVotesPerPerson">Min Votes per User:</label>
+          <input type="number" id="minVotesPerPerson" name="minVotesPerPerson" value="<%= settings.minVotesPerPerson || '' %>" />
+
+          <label class="toggle-label" for="enableVoting">
+            <input type="checkbox" id="enableVoting" name="enableVoting" <%= settings.enableVoting ? 'checked' : '' %> />
+            Enable Voting
+          </label>
+        </div>
+      </li>
+
+      <!-- Payment Settings -->
+      <li>
+        <div class="collapsible-header" tabindex="0" role="button" aria-expanded="false" aria-controls="paymentSettings">
+          <span class="material-icons" aria-hidden="true">payment</span> Payment Settings
+        </div>
+        <div class="collapsible-body" id="paymentSettings" role="region" aria-labelledby="paymentSettingsHeader">
+          <label for="paystackKey">Paystack Public Key:</label>
+          <input
+            type="text"
+            id="paystackKey"
+            name="paystackPublicKey"
+            value="<%= settings.enableTestMode ? settings.paystackTestPublicKey : settings.paystackPublicKey %>"
+            <%= settings.enableTestMode ? '' : 'readonly' %>
+            required
+          />
+
+          <label for="paystackSecretKey">Paystack Secret Key:</label>
+          <input
+            type="text"
+            id="paystackSecretKey"
+            name="paystackSecretKey"
+            value="<%= settings.enableTestMode ? settings.paystackTestSecretKey : settings.paystackSecretKey %>"
+            <%= settings.enableTestMode ? '' : 'readonly' %>
+            required
+          />
+
+          <label class="toggle-label" for="enableTestMode">
+            <input
+              type="checkbox"
+              id="enableTestMode"
+              name="enableTestMode"
+              <%= settings.enableTestMode ? 'checked' : '' %>
+            />
+            Enable Test Mode
+          </label>
+        </div>
+      </li>
+    </ul>
+
+    <button type="button" class="btn" onclick="saveSettings()">Save Settings</button>
+    <div id="message" role="alert" aria-live="polite"></div>
+  </form>
+</div>
+
+<script>
+  // Collapsible logic with ARIA update
+  document.querySelectorAll('.collapsible-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const body = header.nextElementSibling;
+      const isOpen = body.classList.contains('show');
+
+      // Close all and update aria-expanded
+      document.querySelectorAll('.collapsible-body').forEach(b => b.classList.remove('show'));
+      document.querySelectorAll('.collapsible-header').forEach(h => h.setAttribute('aria-expanded', 'false'));
+
+      if (!isOpen) {
+        body.classList.add('show');
+        header.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    // Accessibility: toggle on Enter/Space
+    header.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        header.click();
+      }
+    });
+  });
+
+  // Preview logo on file select
+    document.addEventListener('DOMContentLoaded', function () {
+      M.Collapsible.init(document.querySelectorAll('.collapsible'));
+      toggleLiveMode();
+      document.getElementById('enableTestMode').addEventListener('change', toggleLiveMode);
+    });
+
+    function previewLogo(event) {
+      const logoPreview = document.getElementById('logoPreview');
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          logoPreview.src = e.target.result;
+          logoPreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function validateForm() {
+      const siteName = document.getElementById('siteName').value.trim();
+      const siteDescription = document.getElementById('siteDescription').value.trim();
+      if (!siteName || !siteDescription) {
+        showMessage("⚠️ Site name and description are required.", "error");
+        return false;
+      }
+      return true;
+    }
+
+    async function saveSettings() {
+      if (!validateForm()) return;
+
+      const formData = new FormData();
+      formData.append('siteName', document.getElementById('siteName').value);
+      formData.append('siteDescription', document.getElementById('siteDescription').value);
+      formData.append('pricePerVote', document.getElementById('votePrice').value);
+      formData.append('maxVotesPerPerson', document.getElementById('maxVotesPerPerson').value);
+      formData.append('minVotesPerPerson', document.getElementById('minVotesPerPerson').value);
+      formData.append('enableWebsite', document.getElementById('enableWebsite').checked ? 'on' : '');
+      formData.append('enableVoting', document.getElementById('enableVoting').checked ? 'on' : '');
+      formData.append('enableTestMode', document.getElementById('enableTestMode').checked ? 'on' : '');
+
+      const logoInput = document.querySelector('input[name="siteLogo"]');
+      if (logoInput && logoInput.files.length > 0) {
+        formData.append('siteLogo', logoInput.files[0]);
+      }
+
+      try {
+        const res = await fetch('/admin/settings', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          showMessage(data.message || '✅ Settings updated successfully!', 'success');
+        } else {
+          showMessage(data.message || '❌ Failed to update settings.', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showMessage('⚠️ Server error occurred.', 'error');
+      }
+    }
+
+    function showMessage(message, type) {
+      const messageDiv = document.getElementById("message");
+      messageDiv.innerHTML = `<div class="alert" style="background-color: ${type === "success" ? "#4CAF50" : "red"}; color: white; margin-top: 20px; padding: 10px; border-radius: 5px;">
+        ${message}
+        <button onclick="closeAlert()" style="background: none; color: white; cursor: pointer; border: none; float: right;">&times;</button>
+      </div>`;
+      setTimeout(() => {
+        messageDiv.innerHTML = '';
+        location.reload();
+      }, 4000);
+    }
+
+    function closeAlert() {
+      document.getElementById("message").innerHTML = '';
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    function toggleLiveMode() {
+      const testMode = document.getElementById('enableTestMode').checked;
+      const publicKeyInput = document.getElementById('paystackKey');
+      const secretKeyInput = document.getElementById('paystackSecretKey');
+
+      if (testMode) {
+        publicKeyInput.removeAttribute('readonly');
+        secretKeyInput.removeAttribute('readonly');
+      } else {
+        publicKeyInput.setAttribute('readonly', 'readonly');
+        secretKeyInput.setAttribute('readonly', 'readonly');
+      }
+    }
+</script>
+
+</body>
+</html>

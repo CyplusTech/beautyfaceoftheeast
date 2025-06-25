@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <%-include("partials/head")%>
+  <title><%=title ? "Contact Us" : ""%></title>
+</head>
+<body>
+    <!-- /////////nav-bar section//// -->
+    <%-include("partials/nav-bar")%>
+
+        <!-- //////banner section//// -->
+        <%-include("partials/banner")%>
+
+  <main>
+    <section class="contact-section">
+      <div class="container">
+        <div class="contact-info">
+          <h2>Contact Us</h2>
+          <p>
+            Have any questions or inquiries? We'd love to hear from you! 
+            Reach out to us via the form or through the contact details below.
+          </p>
+          <ul>
+            <li><strong>Email:</strong> support@faceoftheeast.com</li>
+            <li><strong>Phone:</strong> +234 816 542 7834</li>
+            <li><strong>Address:</strong> 47 Eleganza Crescent, Lekki Phase 1, Lagos, Nigeria</li>
+          </ul>
+        </div>
+        <div class="contact-form">
+          <form action="/contact" method="POST" id="contactForm">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  
+   <!-- ///////testimonials section///// -->
+    <%-include("partials/testimony")%>
+
+   <!-- ///////footer section////// -->
+    <%-include("partials/footer")%>
+
+    <script>
+document.getElementById("contactForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const response = await fetch("/contact", {
+        method: "POST",
+        body: new URLSearchParams(formData)
+    });
+    const result = await response.json();
+    alert(result.message);
+
+        // Refresh the page
+    window.location.reload();
+});
+</script>
+
+</body>
+</html>

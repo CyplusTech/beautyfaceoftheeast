@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="/style/admin/admin.css">
+    <title>Registration - Face of the East</title>
+    <link rel="stylesheet" href="/style/auth/auth.css" />
+  <link rel="stylesheet" href="/style/admin/admin-nav.css">
+
+  </head>
+  <body>
+        <!-- /////////navigation section //////// -->
+        <div class="admin-container">
+     <%-include("../partials/admin-navbar")%>
+
+    <main class="content">
+      <div class="registration-form">
+        <h2>Edit user</h2>
+          <form action="/admin/users/edit/<%= user._id %>" method="POST" enctype="multipart/form-data">
+
+          <div class="profile-pic-container">
+            <label for="profile-pic">Upload Picture</label>
+            <input type="file" id="profile-pic" name="img" accept="image/*" />
+
+            <!-- Fixed image path -->
+            <!-- Show current image -->
+              <% if (user.img) { %>
+                <img
+                  id="profile-preview"
+                  class="profile-pic"
+                  src="<%= user.img %>"
+                  alt="Profile Picture Preview"
+                  style="display: block;"
+                />
+              <% } else { %>
+                <img
+                  id="profile-preview"
+                  class="profile-pic"
+                  style="display: none;"
+                />
+              <% } %>
+            </div>
+
+          <!-- Personal Details and Contact Info -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="first-name">Full Name</label>
+              <input
+                type="text"
+                id="first-name"
+                name="fullName"
+                value="<%=user.fullName %>"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="last-name">Email</label>
+              <input
+                type="email"
+                id="last-name"
+                name="email"
+                value="<%= user.email %>"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="state">State</label>
+              <input
+                type="text"
+                id="state"
+                name="state"
+                value="<%= user.state %>"
+                placeholder="Enter your state"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="phone-number">Phone Number</label>
+              <input
+                type="tel"
+                id="phone-number"
+                name="phone"
+                value="<%= user.phone %>"
+                placeholder="Enter your phone number"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Gender</label>
+              <div class="radio-group">
+                <label for="gender-female">
+                  <input type="radio" id="gender-female" name="gender" <%=
+                  user.gender === 'Female' ? 'checked' : '' %> required> Female
+                </label>
+                <label for="gender-male">
+                  <input type="radio" id="gender-male" name="gender" value="Male"
+                  <%= user.gender === 'Male' ? 'checked' : '' %> required> Male
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Role</label>
+              <div class="radio-group">
+                <label for="Role">
+                  <input type="checkbox" id="single" checked disabled /> User
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- Submit Button -->
+          <div class="form-group form-inpt">
+            <button type="submit">Submit Registration</button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+    <script>
+      document.getElementById("profile-pic").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const preview = document.getElementById("profile-preview");
+            preview.style.display = "block";
+            preview.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    </script>
+    
+  </body>
+</html>

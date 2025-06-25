@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin Settings - Pageantry</title>
+
+<style>
+  /* Base settings */
+  body.settings-body {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    margin: 0;
+    transition: background 0.5s;
+    position: relative;
+  }
+  .container {
+    max-width: 800px;
+    width: 100%;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: all 0.3s ease-in-out;
+  }
+  h4.center-align {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  /* Back button */
+  .back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #ff5733;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s;
+    user-select: none;
+  }
+  .back-btn:hover {
+    background: #c70039;
+  }
+
+  /* Collapsible styles */
+  .collapsible {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .collapsible li {
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .collapsible-header {
+    background: #007bff;
+    color: white;
+    padding: 15px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+    border-radius: 10px;
+    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  .collapsible-header:hover,
+  .collapsible-header:focus {
+    background: #0056b3;
+    outline: none;
+    transform: scale(1.02);
+  }
+  .collapsible-header .material-icons {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Collapsible body with animation */
+  .collapsible-body {
+    background: #f8f9fa;
+    padding: 0 20px;
+    border-radius: 0 0 10px 10px;
+    max-height: 0;
+    overflow: hidden;
+    font-size: 14px;
+    transition: max-height 0.5s ease, padding 0.5s ease, transform 0.5s ease;
+    transform: translateY(0);
+  }
+  .collapsible-body.show {
+    max-height: 600px; /* large enough for content */
+    padding: 20px;
+    transform: translateY(-10px);
+  }
+
+  /* Form inputs */
+  input[type="text"],
+  input[type="number"],
+  input[type="file"],
+  textarea,
+  select {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 12px;
+    width: 100%;
+    margin-top: 5px;
+    font-size: 16px;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  label {
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-top: 15px;
+  }
+
+  /* Toggle switch style for checkbox inputs */
+  .toggle-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 20px;
+    user-select: none;
+  }
+  .toggle-label input[type="checkbox"] {
+    appearance: none;
+    width: 50px;
+    height: 26px;
+    background: #ccc;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease;
+  }
+  .toggle-label input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background: white;
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 3px rgba(0,0,0,0.2);
+  }
+  .toggle-label input[type="checkbox"]:checked {
+    background: #28a745;
+  }
+  .toggle-label input[type="checkbox"]:checked::before {
+    transform: translateX(24px);
+  }
+  /* Increase size on hover */
+  .toggle-label input[type="checkbox"]:hover {
+    box-shadow: 0 0 5px #28a745;
+  }
+
+  /* Button styles */
+  .btn {
+    width: 100%;
+    margin-top: 15px;
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s;
+    user-select: none;
+  }
+  .btn:hover {
+    background: linear-gradient(135deg, #218838, #1e7e34);
+    transform: scale(1.05);
+  }
+
+  /* Message alert */
+  #message .alert {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    position: relative;
+  }
+  #message .alert.success {
+    background-color: #4CAF50;
+  }
+  #message .alert.error {
+    background-color: #d9534f;
+  }
+  #message .alert button {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  /* Logo preview */
+  #logoPreview {
+    max-width: 100px;
+    margin-top: 10px;
+    display: block;
+    border-radius: 5px;
+  }
+</style>
+
+<!-- Google Material Icons CDN -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+</head>
+<body class="settings-body">
+
+<button class="back-btn" onclick="goBack()" aria-label="Go Back">🔙 Back</button>
+
+<div class="container" role="main">
+  <h4 class="center-align">Admin Settings</h4>
+  <form id="adminSettingsForm" enctype="multipart/form-data" novalidate>
+    <ul class="collapsible" id="collapsible" role="list">
+      <!-- General Settings -->
+      <li>
+        <div class="collapsible-header" tabindex="0" role="button" aria-expanded="false" aria-controls="generalSettings">
+          <span class="material-icons" aria-hidden="true">settings</span> General Settings
+        </div>
+        <div class="collapsible-body" id="generalSettings" role="region" aria-labelledby="generalSettingsHeader">
+          <label for="siteName">Site Name:</label>
+          <input type="text" id="siteName" name="siteName" value="<%= settings?.siteName || '' %>" required />
+
+          <label for="siteDescription">Description:</label>
+          <textarea id="siteDescription" name="siteDescription" required><%= settings?.siteDescription || '' %></textarea>
+
+          <label for="siteLogo">Logo:</label>
+          <input type="file" id="siteLogo" name="siteLogo" onchange="previewLogo(event)" accept="image/*" />
+          <% if (settings?.siteLogo) { 
+            const logoFileName = settings.siteLogo.split('/').pop(); %>
+            <p>Current Logo File: <%= logoFileName %></p>
+            <img id="logoPreview" src="<%= settings.siteLogo %>" alt="Logo Preview" />
+          <% } else { %>
+            <img id="logoPreview" alt="Logo Preview" style="display:none" />
+          <% } %>
+
+          <label>
+            <label class="toggle-label" for="enableWebsite">
+              <input type="checkbox" id="enableWebsite" name="enableWebsite" <%= settings.enableWebsite ? 'checked' : '' %> />
+              Enable Website
+            </label>
+        </div>
+      </li>
+
+      <!-- Voting Settings -->
+      <li>
+        <div class="collapsible-header" tabindex="0" role="button" aria-expanded="false" aria-controls="votingSettings">
+          <span class="material-icons" aria-hidden="true">how_to_vote</span> Voting Settings
+        </div>
+        <div class="collapsible-body" id="votingSettings" role="region" aria-labelledby="votingSettingsHeader">
+          <label for="votePrice">Price per Vote:</label>
+          <input type="number" id="votePrice" name="pricePerVote" value="<%= settings.pricePerVote %>" required />
+
+          <label for="maxVotesPerPerson">Max Votes per User:</label>
+          <input type="number" id="maxVotesPerPerson" name="maxVotesPerPerson" value="<%= settings.maxVotesPerPerson %>" required />
+
+          <label for="minVotesPerPerson">Min Votes per User:</label>
+          <input type="number" id="minVotesPerPerson" name="minVotesPerPerson" value="<%= settings.minVotesPerPerson || '' %>" />
+
+          <label class="toggle-label" for="enableVoting">
+            <input type="checkbox" id="enableVoting" name="enableVoting" <%= settings.enableVoting ? 'checked' : '' %> />
+            Enable Voting
+          </label>
+        </div>
+      </li>
+
+      <!-- Payment Settings -->
+      <li>
+        <div class="collapsible-header" tabindex="0" role="button" aria-expanded="false" aria-controls="paymentSettings">
+          <span class="material-icons" aria-hidden="true">payment</span> Payment Settings
+        </div>
+        <div class="collapsible-body" id="paymentSettings" role="region" aria-labelledby="paymentSettingsHeader">
+          <label for="paystackKey">Paystack Public Key:</label>
+          <input
+            type="text"
+            id="paystackKey"
+            name="paystackPublicKey"
+            value="<%= settings.enableTestMode ? settings.paystackTestPublicKey : settings.paystackPublicKey %>"
+            <%= settings.enableTestMode ? '' : 'readonly' %>
+            required
+          />
+
+          <label for="paystackSecretKey">Paystack Secret Key:</label>
+          <input
+            type="text"
+            id="paystackSecretKey"
+            name="paystackSecretKey"
+            value="<%= settings.enableTestMode ? settings.paystackTestSecretKey : settings.paystackSecretKey %>"
+            <%= settings.enableTestMode ? '' : 'readonly' %>
+            required
+          />
+
+          <label class="toggle-label" for="enableTestMode">
+            <input
+              type="checkbox"
+              id="enableTestMode"
+              name="enableTestMode"
+              <%= settings.enableTestMode ? 'checked' : '' %>
+            />
+            Enable Test Mode
+          </label>
+        </div>
+      </li>
+    </ul>
+
+    <button type="button" class="btn" onclick="saveSettings()">Save Settings</button>
+    <div id="message" role="alert" aria-live="polite"></div>
+  </form>
+</div>
+
+<script>
+  // Collapsible logic with ARIA update
+  document.querySelectorAll('.collapsible-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const body = header.nextElementSibling;
+      const isOpen = body.classList.contains('show');
+
+      // Close all and update aria-expanded
+      document.querySelectorAll('.collapsible-body').forEach(b => b.classList.remove('show'));
+      document.querySelectorAll('.collapsible-header').forEach(h => h.setAttribute('aria-expanded', 'false'));
+
+      if (!isOpen) {
+        body.classList.add('show');
+        header.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    // Accessibility: toggle on Enter/Space
+    header.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        header.click();
+      }
+    });
+  });
+
+  // Preview logo on file select
+  function previewLogo(event) {
+    const preview = document.getElementById('logoPreview');
+    const file = event.target.files[0];
+    if (!file) {
+      preview.style.display = 'none';
+      preview.src = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Save settings function with basic validation
+  function saveSettings() {
+    const form = document.getElementById('adminSettingsForm');
+    const message = document.getElementById('message');
+    message.innerHTML = ''; // Clear
+
+    if (!form.siteName.value.trim()) {
+      showMessage('Site Name is required', 'error');
+      return;
+    }
+    if (!form.pricePerVote.value || Number(form.pricePerVote.value) <= 0) {
+      showMessage('Price per Vote must be a positive number', 'error');
+      return;
+    }
+    if (!form.paystackPublicKey.value.trim() || !form.paystackSecretKey.value.trim()) {
+      showMessage('Paystack keys are required', 'error');
+      return;
+    }
+
+    // TODO: Submit form via AJAX or normal post here
+    showMessage('Settings saved successfully!', 'success');
+  }
+
+  function showMessage(text, type) {
+    const message = document.getElementById('message');
+    message.innerHTML = `<div class="alert ${type}">${text}<button aria-label="Close message" onclick="this.parentElement.style.display='none'">&times;</button></div>`;
+  }
+
+  // Back button logic
+  function goBack() {
+    window.history.back();
+  }
+</script>
+
+</body>
+</html>

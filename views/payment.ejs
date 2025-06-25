@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <%-include("partials/head")%>
+   <title>Contestants | Payment</title>
+</head>
+<body>
+
+   <!-- /////////nav-bar section//// -->
+   <%-include("partials/nav-bar")%>
+
+   <div class="payment-container">
+      <p class="payment-instructions">
+         Complete your payment below to submit your votes. Each vote costs <span>100</span>. The minimum number of votes is <span>5</span>.
+      </p>
+
+      <div class="payment-summary">
+         <p>Number of Votes: <span id="votes-count">10</span></p>
+         <p>Total Amount: ₦ <span id="total-amount"> 1,000</span></p>
+      </div>
+
+      <form class="payment-form" id="payment-form">
+         <label for="name">Full Name:</label>
+         <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+         <label for="email">Email Address:</label>
+         <input type="hidden" id="contestantId" value="<%=contestantId%>">
+         <input type="email" id="voterEmail" name="email" placeholder="Enter your email address" required>
+
+         <label for="payment-method">Payment Method:</label>
+         <select id="payment-method" name="payment-method" required>
+            <option value="paystack">Pay with Card/USSD</option>
+            <option value="bank-transfer">Bank Transfer</option>
+         </select>
+
+         <button type="submit" id="btn">Pay Now</button>
+      </form>
+
+      <a href="javascript:history.back()" class="back-button">Back to Contestant</a>
+   </div>
+
+   <%-include("partials/testimony")%>
+   <%-include("partials/footer")%>
+
+   <script>
+      const voteData = JSON.parse(localStorage.getItem('voteDetails'));
+      if (!voteData || !voteData.votes || !voteData.totalCost) {
+         alert("No valid vote details found. Please vote first.");
+         window.location.href = "/contestant/single";
+      } else {
+         document.getElementById('votes-count').textContent = voteData.votes;
+         document.getElementById('total-amount').textContent = voteData.totalCost.toLocaleString();
+      }
+
+      document.querySelector("#btn").addEventListener("click", async function (event) {
+         event.preventDefault();
+
+         const name = document.getElementById('name')?.value.trim();
+         const voterEmail = document.getElementById('voterEmail')?.value.trim();
+         const contestantId = document.getElementById('contestantId')?.value;
+         const paymentMethod = document.getElementById('payment-method')?.value;
+         const votes = document.getElementById('votes-count')?.textContent;
+         const amount = parseInt(document.getElementById('total-amount')?.textContent.replace(',', '')) * 100;
+
+         if (!name || !voterEmail || !contestantId || !paymentMethod) {
+            alert('Please fill in all fields.');
+            return;
+         }
+
+         try {
+            const response = await fetch("/pay", {
+               method: "POST",
+               headers: { "Content-Type": "application/json" },
+               body: JSON.stringify({ name, voterEmail, contestantId, paymentMethod, votes, amount }),
+            });
+
+            const data = await response.json();
+            if (data.url) {
+               window.location.href = data.url;
+            } else {
+               alert("Payment failed. Please try again.");
+            }
+         } catch (error) {
+            console.error("Payment error:", error);
+            alert("Error processing payment. Please check your internet connection.");
+         }
+      });
+   </script>
+</body>
+</html>

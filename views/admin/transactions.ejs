@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/admin/admin.css">
+  <link rel="stylesheet" href="/style/admin/admin-nav.css">
+
+    <!-- <script defer src="/js/admin-scripts.js"></script> -->
+    <title>Admin Dashboard</title>
+    <style>
+        .transaction-filter {
+            width: 25%;
+            margin-left: 10px;
+        }
+
+     .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .pending {
+            color: #ffc107;
+        }
+        .success {
+            color: #28a745;
+        }
+        .failed {
+            color: #dc3545;
+        }
+    </style>
+</head>
+    <!-- /////////navigation section //////// -->
+   <%-include("../partials/admin-navbar")%>
+
+        <main class="content">
+            <header>
+                <h1>Transaction Management</h1>
+                <input type="text" id="searchUser" class="search" placeholder="Search users...">
+            </header>
+               <select id="status-filter" class="transaction-filter">
+                <option value="">All</option>
+                <option value="pending">Pending</option>
+                <option value="successful">Successful</option>
+                <option value="failed">Failed</option>
+            </select>
+            <section id="users">
+        <table class="table-container">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Email</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+              <tbody>
+            <% if (transactions.length === 0) { %>
+                <tr><td colspan="6">No transactions found.</td></tr>
+            <% } else { %>
+                <% transactions.forEach(transaction => { %>
+                    <tr>
+                        <td><%= transaction.reference %></td>
+                        <td><%= transaction.voterEmail %></td>
+                        <td>₦<%= transaction.amount%></td> <!-- Convert from kobo -->
+                        <td class="<%=transaction.status%>">
+                            <%= transaction.status %>
+                        </td>
+                        <td><%= new Date(transaction.createdAt).toLocaleString() %></td>
+                    </tr>
+                <% }) %>
+            <% } %>
+        </tbody>
+          </table>
+                <div class="pagination">
+                    <button id="prevPage">Previous</button>
+                    <span id="pageNumber">1</span>
+                    <button id="nextPage">Next</button>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+          document.querySelector('.toggle-btn').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+           function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+          const transactions = [
+            { id: 1, user: "John Doe", amount: 50, date: "2025-03-12", status: "pending" },
+            { id: 2, user: "Jane Smith", amount: 120, date: "2025-03-10", status: "successful" },
+            { id: 3, user: "Alice Brown", amount: 75, date: "2025-03-11", status: "failed" }
+        ];
+        
+         const users = [
+            { name: "John Doe", email: "john@example.com", role: "Admin" },
+            { name: "Jane Smith", email: "jane@example.com", role: "User" },
+            { name: "Alice Johnson", email: "alice@example.com", role: "User" },
+        ];
+
+        let rowsPerPage = 2;
+        let currentPage = 1;
+        let filteredUsers = [...users];
+
+        function renderTable() {
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            const paginatedUsers = filteredUsers.slice(start, end);
+            document.getElementById("pageNumber").innerText = currentPage;
+            document.getElementById("prevPage").disabled = currentPage === 1;
+            document.getElementById("nextPage").disabled = end >= filteredUsers.length;
+        }
+
+        document.getElementById("searchUser").addEventListener("input", (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            filteredUsers = users.filter(user => user.name.toLowerCase().includes(searchTerm));
+            currentPage = 1;
+            renderTable();
+        });
+
+        document.getElementById("prevPage").addEventListener("click", () => { currentPage--; renderTable(); });
+        document.getElementById("nextPage").addEventListener("click", () => { currentPage++; renderTable(); });
+        renderTable();
+    </script>
+</body>
+</html>
+

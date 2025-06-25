@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <%-include("partials/head")%>
+  <title><%=title ? "About Us" : ""%></title>
+</head>
+<body>
+     <!-- /////////nav-bar section//// -->
+    <%-include("partials/nav-bar")%>
+
+        <!-- //////banner section//// -->
+        <%-include("partials/banner")%>
+
+  <section class="about-us">
+    <h1>About Us</h1>
+    <p>
+      Welcome to <strong>Face of the East</strong>, a premier online beauty pageant celebrating the strength, beauty, and ambition of women across Africa. 
+      Our platform is more than just a contest; it’s a movement designed to empower women to embrace their unique identities, achieve their dreams, 
+      and build self-confidence as a catalyst for success.
+    </p>
+
+    <div class="vision">
+      <h2>Our Vision</h2>
+      <p>
+        To inspire and empower young women to discover their inner beauty and potential, creating a community of leaders who make a difference in the world.
+      </p>
+    </div>
+
+    <div class="mission">
+      <h2>Our Mission</h2>
+      <p>
+        At Face of the East, our mission is to:
+        <ul>
+          <li>Celebrate the diversity and beauty of African women.</li>
+          <li>Provide a platform that nurtures talent, confidence, and leadership skills.</li>
+          <li>Support participants in realizing their dreams and ambitions through mentorship, education, and opportunities.</li>
+        </ul>
+      </p>
+    </div>
+
+    <div class="cta">
+      <a href="#register">Join the Movement</a>
+    </div>
+  </section>
+
+   <!-- ///////testimonials section///// -->
+    <%-include("partials/testimony")%>
+
+   <!-- ///////footer section////// -->
+    <%-include("partials/footer")%>
+</body>
+</html>

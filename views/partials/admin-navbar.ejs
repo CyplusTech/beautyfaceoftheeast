@@ -1,0 +1,72 @@
+<button class="toggle-btn">☰</button>
+<aside class="admin-sidebar">
+  <h2 class="sidebar-heading">Admin Panel</h2>
+  <nav>
+    <ul class="sidebar-nav">
+      <li><a href="/admin" class="sidebar-link <%= page === 'dashboard' ? 'active' : '' %>">Dashboard</a></li>
+
+      <!-- Users Dropdown -->
+      <li>
+        <details <%= ['add-constestant', 'users'].includes(page) ? 'open' : '' %>>
+          <summary class="dropdown-summary">User Management</summary>
+          <ul class="dropdown-links">
+            <li><a href="/admin/create-contestant" class="sidebar-link <%= page === 'add-constestant' ? 'active' : '' %>">Add User/Contestant</a></li>
+            <li><a href="/admin/users" class="sidebar-link <%= page === 'users' ? 'active' : '' %>">Manage Users</a></li>
+          </ul>
+        </details>
+      </li>
+
+      <!-- Activities Dropdown -->
+      <li>
+        <details <%= ['transactions', 'messages'].includes(page) ? 'open' : '' %>>
+          <summary class="dropdown-summary">Activities</summary>
+          <ul class="dropdown-links">
+            <li><a href="/admin/transactions" class="sidebar-link <%= page === 'transactions' ? 'active' : '' %>">Transactions</a></li>
+            <li><a href="/admin/messages" class="sidebar-link <%= page === 'messages' ? 'active' : '' %>">Messages</a></li>
+          </ul>
+        </details>
+      </li>
+
+      <li><a href="/admin/settings" class="sidebar-link <%= page === 'settings' ? 'active' : '' %>">Settings</a></li>
+
+<!-- Admin Control (Super Admin Only) -->
+<% if (userRole === 'superadmin') { %>
+  <li class="super-admin-only">
+    <details <%= page === 'admins' ? 'open' : '' %>>
+      <summary class="dropdown-summary">Admin Controls</summary>
+      <ul class="dropdown-links">
+        <li>
+          <a href="/admin/add-admin"
+             class="sidebar-link <%= page === 'admins' && subPage === 'add' ? 'active' : '' %>">
+            Add Admin
+          </a>
+        </li>
+        <li>
+          <a href="/admin/manage-admins"
+             class="sidebar-link <%= page === 'admins' && subPage === 'manage' ? 'active' : '' %>">
+            Manage Admin
+          </a>
+        </li>
+      </ul>
+    </details>
+  </li>
+<% } %>
+
+
+      <li><a href="/logout" class="sidebar-link">Logout</a></li>
+    </ul>
+  </nav>
+</aside>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.querySelector(".toggle-btn");
+  const sidebar = document.querySelector(".admin-sidebar");
+  const header = document.querySelector("header");
+
+  toggleBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+    header.classList.toggle("sidebar-open");  // toggle the class for padding-left control
+  });
+});
+
+</script>

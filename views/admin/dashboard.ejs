@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/admin/admin.css">
+    <link rel="stylesheet" href="/style/admin/admin-nav.css">
+    <script defer src="/js/admin-scripts.js"></script>
+    <title>Admin Dashboard</title>
+</head>
+<body >
+    <!-- /////////navigation section //////// -->
+   <%-include("../partials/admin-navbar")%>   
+    <div class="admin-container">
+        <header>
+            <h1>Dashboard</h1>
+        </header>
+
+        <main class="content">
+                <div class="dashboard-container">
+        <div class="dashboard">
+            <div class="box">
+                <span class="icon">👤</span>
+                <h3>Total Contestant</h3>
+                <p id="totalUsers"> <strong><%= totalContestants %></strong></p>
+            </div>
+            <div class="box">
+                <span class="icon">🗳️</span>
+                <h3>Total Votes</h3>
+                <p id="totalVotes"><%=totalVotesCount%></p>
+            </div>
+            <div class="box">
+                <span class="icon">💰</span>
+                <h3>Revenue Generated</h3>
+                <p id="revenue">₦ <strong><%= totalRevenue.toLocaleString() %></strong></p>
+            </div>
+        </div>
+    </div>
+        </main>
+    </div>
+
+    <script>
+          document.querySelector('.toggle-btn').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+////////darkMood////
+           function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+    let users = [
+        { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
+        { id: 2, name: "Jane Smith", email: "jane@example.com", role: "User" },
+        { id: 3, name: "Alice Johnson", email: "alice@example.com", role: "User" }
+    ];
+
+    let currentPage = 1;
+    const rowsPerPage = 2;
+    const userList = document.getElementById("userList");
+    const searchInput = document.getElementById("searchUser");
+    const prevPageBtn = document.getElementById("prevPage");
+    const nextPageBtn = document.getElementById("nextPage");
+    const pageNumber = document.getElementById("pageNumber");
+
+    function renderUsers(filteredUsers = users) {
+        userList.innerHTML = "";
+        let start = (currentPage - 1) * rowsPerPage;
+        let paginatedUsers = filteredUsers.slice(start, start + rowsPerPage);
+
+        paginatedUsers.forEach(user => {
+            let row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.role}</td>
+                <td>
+                    <button class="edit-btn" onclick="editUser(${user.id})">Edit</button>
+                    <button class="delete-btn" onclick="deleteUser(${user.id})">Delete</button>
+                </td>
+            `;
+            userList.appendChild(row);
+        });
+
+        pageNumber.textContent = currentPage;
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage * rowsPerPage >= filteredUsers.length;
+    }
+
+    function editUser(id) {
+        let user = users.find(u => u.id === id);
+        let newName = prompt("Edit Name:", user.name);
+        let newEmail = prompt("Edit Email:", user.email);
+        if (newName && newEmail) {
+            user.name = newName;
+            user.email = newEmail;
+            renderUsers();
+        }
+    }
+
+    function deleteUser(id) {
+        users = users.filter(user => user.id !== id);
+        currentPage = 1;
+        renderUsers();
+    }
+
+    searchInput.addEventListener("input", () => {
+        let query = searchInput.value.toLowerCase();
+        let filteredUsers = users.filter(user =>
+            user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query)
+        );
+        currentPage = 1;
+        renderUsers(filteredUsers);
+    });
+
+    prevPageBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderUsers();
+        }
+    });
+
+    nextPageBtn.addEventListener("click", () => {
+        if (currentPage * rowsPerPage < users.length) {
+            currentPage++;
+            renderUsers();
+        }
+    });
+
+    renderUsers();
+});
+
+    </script>
+</body>
+</html>
+

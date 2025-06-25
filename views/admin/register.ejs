@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/style/admin/admin.css">
+  <link rel="stylesheet" href="/style/auth/auth.css">
+  <link rel="stylesheet" href="/style/admin/admin-nav.css">
+
+    <script defer src="/js/admin-scripts.js"></script>
+    <title>Admin Dashboard</title>
+</head>
+<body >
+    <!-- /////////navigation section //////// -->
+   <%-include("../partials/admin-navbar")%>
+    <div class="admin-container">
+
+        <main class="content">
+          <div class="registration-form">
+            <h2>Register Now</h2>
+              <form action="/admin/register" method="POST" enctype="multipart/form-data">
+
+              
+              <!-- Profile Picture Upload -->
+              <div class="profile-pic-container">
+                <label for="profile-pic">Upload Picture</label>
+                <input type="file" id="profile-pic" name="img" accept="image/*" required disabled>
+                <img id="profile-preview" class="profile-pic" src="#" alt="Profile Picture Preview" style="display:none;">
+              </div>
+        
+              <!-- Personal Details and Contact Info -->
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="first-name">Full Name</label>
+                  <input type="text" id="first-name" name="fullName" placeholder="Enter your first name" required>
+                </div>
+        
+                <div class="form-group">
+                  <label for="last-name">Email</label>
+                  <input type="email" id="last-name" name="email" placeholder="Enter your first email" required>
+                </div>
+              </div>
+        
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="state">State</label>
+                  <input type="text" id="state" name="state" placeholder="Enter your state" required>
+                </div>
+        
+                <div class="form-group">
+                  <label for="phone-number">Phone Number</label>
+                  <input type="tel" id="phone-number" name="phone" placeholder="Enter your phone number" required>
+                </div>
+              </div>
+        
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Gender</label>
+                  <div class="radio-group">
+                    <label for="gender-female">
+                      <input type="radio" id="gender-female" name="gender" value="Female" required> Female
+                    </label>
+                    <label for="gender-male">
+                      <input type="radio" id="gender-male" name="gender" value="Male" required> Male
+                    </label>
+                  </div>
+                </div>
+        
+                <div class="form-group">
+                  <label>Role</label>
+                  <div class="radio-group">
+                    <label for="Role">
+                      <input type="checkbox" id="single"  checked disabled> User
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <!-- Submit Button -->
+              <div class="form-group form-inpt">
+                <button type="submit">Submit Registration</button>
+              </div>
+        
+            </form>
+          </div>
+        
+        </main>
+    </div>
+
+    <script>
+          document.querySelector('.toggle-btn').addEventListener('click', () => {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+////////darkMood////
+           function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+    let users = [
+        { id: 1, name: "John Doe", email: "john@example.com", role: "Admin" },
+        { id: 2, name: "Jane Smith", email: "jane@example.com", role: "User" },
+        { id: 3, name: "Alice Johnson", email: "alice@example.com", role: "User" }
+    ];
+
+    let currentPage = 1;
+    const rowsPerPage = 2;
+    const userList = document.getElementById("userList");
+    const searchInput = document.getElementById("searchUser");
+    const prevPageBtn = document.getElementById("prevPage");
+    const nextPageBtn = document.getElementById("nextPage");
+    const pageNumber = document.getElementById("pageNumber");
+
+    function renderUsers(filteredUsers = users) {
+        userList.innerHTML = "";
+        let start = (currentPage - 1) * rowsPerPage;
+        let paginatedUsers = filteredUsers.slice(start, start + rowsPerPage);
+
+        paginatedUsers.forEach(user => {
+            let row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.role}</td>
+                <td>
+                    <button class="edit-btn" onclick="editUser(${user.id})">Edit</button>
+                    <button class="delete-btn" onclick="deleteUser(${user.id})">Delete</button>
+                </td>
+            `;
+            userList.appendChild(row);
+        });
+
+        pageNumber.textContent = currentPage;
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage * rowsPerPage >= filteredUsers.length;
+    }
+
+    function editUser(id) {
+        let user = users.find(u => u.id === id);
+        let newName = prompt("Edit Name:", user.name);
+        let newEmail = prompt("Edit Email:", user.email);
+        if (newName && newEmail) {
+            user.name = newName;
+            user.email = newEmail;
+            renderUsers();
+        }
+    }
+
+    function deleteUser(id) {
+        users = users.filter(user => user.id !== id);
+        currentPage = 1;
+        renderUsers();
+    }
+
+    searchInput.addEventListener("input", () => {
+        let query = searchInput.value.toLowerCase();
+        let filteredUsers = users.filter(user =>
+            user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query)
+        );
+        currentPage = 1;
+        renderUsers(filteredUsers);
+    });
+
+    prevPageBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderUsers();
+        }
+    });
+
+    nextPageBtn.addEventListener("click", () => {
+        if (currentPage * rowsPerPage < users.length) {
+            currentPage++;
+            renderUsers();
+        }
+    });
+
+    renderUsers();
+});
+
+///////form//////
+    // Preview the profile picture before submitting
+    document.getElementById('profile-pic').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('profile-preview').style.display = 'block';
+          document.getElementById('profile-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+         function goBack() {
+            window.history.back();
+        }
+
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%-include("partials/head")%>
+    <title><%=title ? "Home" : ""%></title>
+  </head>
+  <body>
+    <!-- /////////nav-bar section//// -->
+    <%-include("partials/nav-bar")%>
+
+  <!-- Banner Section -->
+  <section id="banner">
+    <div class="banner">
+      <img src="/images/Melanin 30 Stock Images is a premium digital….jpg" alt="Banner 1" class="active-banner" />
+      <img src="/images/lovest.jpg" alt="Banner 2" />
+      <img src="/images/6ec4ff30-0d1c-4757-9cb5-17460a5d8cf5.jpg" alt="Banner 3" />
+      <img src="/images/banner4.jpg" alt="Banner 4" />
+      <img src="/images/e65c5723-825c-4adf-b33e-7abeb5f83d65.jpg" alt="Banner 5" />
+
+      <div class="banner-content">
+        <h1>FACE OF THE EAST</h1>
+        <p>
+          BEAUTIFUL PRIDE OF THE EAST is an online beauty contest for ladies
+          above the age of 18. This contest is organized to empower African
+          women to discover/realize their dreams and build self-confidence as
+          a catalyst for future success.
+        </p>
+        <a href="/contestants" class="register-btn">Vote now</a>
+      </div>
+    </div>
+  </section>
+
+  
+    <!-- ////////about us section////// -->
+    <section id="about-section">
+      <div class="about-container">
+        <div class="about-content reveal-from-left">
+          <h2>About Us</h2>
+          <p>
+            Welcome to <strong>Face of the East</strong>, the premier online beauty contest for African women aged 18 and above.
+            Our mission is to empower women to embrace their unique beauty, build self-confidence, and achieve their dreams.
+            This platform provides participants with opportunities for growth, mentorship, and leadership development.
+          </p>
+          <a href="/about" target="_blank" class="about-btn">Learn More</a>
+        </div>
+        <div class="about-image reveal-from-right">
+          <img src="/images/about.png" alt="About Us Image" />
+        </div>
+      </div>
+    </section>
+    
+    <!-- /////////contestant section////// -->
+    <%-include("partials/contestant-section")%>
+
+
+    <!-- ////////gallery section ////// -->
+    <div class="gallery-container">
+      <h1 class="gallery-title">Our Gallery</h1>
+      
+      <div class="gallery-grid">
+        <!-- Image 1 -->
+        <a href="/images/gallery1.jpg" data-lightbox="gallery" class="gallery-item" data-title="Contestant Zara">
+          <img src="/images/gallery1.jpg" alt="Zara">
+        </a>
+  
+        <!-- Image 2 -->
+        <a href="/images/gallery2.jpg" data-lightbox="gallery" class="gallery-item" data-title="Contestant Ada">
+          <img src="/images/gallery2.jpg" alt="Ada">
+        </a>
+  
+        <!-- Image 3 -->
+        <a href="/images/gallery3.jpg" data-lightbox="gallery" class="gallery-item" data-title="Contestant Nnenna">
+          <img src="/images/gallery3.jpg" alt="Nnenna">
+        </a>
+  
+        <!-- Image 4 -->
+        <a href="/images/gallery4.jpg" data-lightbox="gallery" class="gallery-item" data-title="Cultural Parade">
+          <img src="/images/gallery4.jpg" alt="Cultural Parade">
+        </a>
+  
+        <!-- Add more images as needed -->
+                 <!-- Image 5 -->
+        <a href="/images/gallery3.jpg" data-lightbox="gallery" class="gallery-item" data-title="Contestant Nnenna">
+          <img src="/images/gallery5.jpg" alt="Nnenna">
+        </a>
+  
+          <!-- Image 6 -->
+          <a href="/images/gallery2.jpg" data-lightbox="gallery" class="gallery-item" data-title="Contestant Ada">
+            <img src="/images/gallery6.jpg" alt="Ada">
+          </a>
+
+           <!-- Image 7 -->
+          <a href="/images/gallery3.jpg" data-lightbox="gallery" class="gallery-item" data-title="Contestant Nnenna">
+            <img src="/images/gallery7.jpg" alt="Nnenna">
+          </a>
+
+           <!-- Image 8 -->
+          <a href="/images/gallery3.jpg" data-lightbox="gallery" class="gallery-item" data-title="Contestant Nnenna">
+            <img src="/images/gallery8.jpg" alt="Nnenna">
+          </a>
+      </div>
+    </div>
+  
+
+    <!-- ///////testimonials section///// -->
+    <%-include("partials/testimony")%>
+    
+
+    <!-- ///////contact us section/////// -->
+    <%-include("partials/contactUs")%>
+
+    <!-- ///////footer section////// -->
+    <%-include("partials/footer")%>
+
+    <script>
+      // /navbar script/////
+      // const toggle = document.querySelector(".menu-toggle");
+      // const closeBtn = document.querySelector(".close-btn");
+      // const navLinks = document.querySelector(".nav-links");
+
+    
+      // toggle.addEventListener("click", () => {
+      //   navLinks.classList.toggle("open");
+      // });
+
+      // closeBtn.addEventListener("click", () => {
+      //   navLinks.classList.remove("open");
+      // });
+
+      
+      ///////banner script/////
+      const images = document.querySelectorAll('.banner img');
+    let currentIndex = 0;
+
+    function showNextImage() {
+      images[currentIndex].classList.remove('active-banner');
+      currentIndex = (currentIndex + 1) % images.length;
+      images[currentIndex].classList.add('active-banner');
+    }
+
+    // Start animation only on tablets or smaller
+    if (window.innerWidth <= 1026) {
+      setInterval(showNextImage, 1000);
+    }
+
+
+    //////about section//////
+  function revealOnScroll() {
+    const reveals = document.querySelectorAll('.reveal-from-left, .reveal-from-right');
+    reveals.forEach((el) => {
+      const windowHeight = window.innerHeight;
+      const elementTop = el.getBoundingClientRect().top;
+      const revealPoint = 100;
+
+      if (elementTop < windowHeight - revealPoint) {
+        el.classList.add('active');
+      } else {
+        el.classList.remove('active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', revealOnScroll);
+  window.addEventListener('load', revealOnScroll);
+
+    </script>
+  </body>
+</html>

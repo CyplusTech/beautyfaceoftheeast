@@ -1,0 +1,11 @@
+* {
+    /* margin: 0; */
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.hero {
+    color: red;
+    background-color: green;
+    margin: 0;
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <%-include("../partials/head")%>
+  <title><%=title ? "Login" : ""%></title>
+  <link rel="stylesheet" href="/style/auth/auth.css">
+</head>
+<body>
+
+       <!-- /////////nav-bar section//// -->
+    <%-include("../partials/nav-bar")%>
+
+  <div class="login-form">
+    <% if (success_msg && success_msg.length > 0) { %>
+      <div class="flash-message success" style="display: block;"><%= success_msg %></div>
+    <% } %>
+    
+    <% if (error_msg && error_msg.length > 0) { %>
+      <div class="flash-message error" style="display: block;"><%= error_msg %></div>
+    <% } %>
+    
+    
+    <h2>Login to Your Account</h2>
+    <form action="/admin/login" method="POST">
+      
+      <!-- Email Input -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+
+      <!-- Password Input -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-group">
+        <button type="submit">Login</button>
+      </div>
+
+    </form>
+  </div>
+
+ <!-- ///////testimonials section///// -->
+    <%-include("../partials/testimony")%>
+    
+
+    <!-- ///////contact us section/////// -->
+    <%-include("../partials/contactUs")%>
+
+    <!-- ///////footer section////// -->
+    <%-include("../partials/footer")%>
+
+</body>
+</html>

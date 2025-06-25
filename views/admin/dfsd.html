@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Responsive Admin Investment Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      min-height: 100vh;
+      background: #f0f2f5;
+    }
+
+    .sidebar {
+      background: #111827;
+      width: 250px;
+      min-height: 100vh;
+      color: white;
+      transition: all 0.5s ease;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      padding: 20px 10px;
+      background: #1f2937;
+      font-size: 18px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      padding: 15px 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.3s;
+    }
+
+    .sidebar ul li:hover {
+      background: #1f2937;
+    }
+
+    .sidebar ul li i {
+      margin-right: 10px;
+    }
+
+    .sidebar ul .dropdown {
+      display: none;
+      background: #1f2937;
+    }
+
+    .sidebar ul .dropdown li {
+      padding-left: 45px;
+      font-size: 14px;
+      justify-content: flex-start;
+    }
+
+    .arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .rotate {
+      transform: rotate(90deg);
+    }
+
+    .toggle-btn {
+      display: none;
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      background: #10b981;
+      border: none;
+      padding: 10px 15px;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      z-index: 999;
+    }
+
+    .main {
+      flex-grow: 1;
+      padding: 20px;
+      transition: margin-left 0.5s;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    h2.section-title {
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    table th, table td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    table th {
+      background: #10b981;
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 0;
+        z-index: 998;
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+
+      .toggle-btn {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar" id="sidebar">
+    <h2>Admin Dashboard</h2>
+    <ul>
+      <li onclick="toggleDropdown(this)">
+        <div><i class="fas fa-briefcase"></i> Investments</div>
+        <i class="fas fa-chevron-right arrow"></i>
+      </li>
+      <ul class="dropdown">
+        <li onclick="showSection('invests')">📥 Invests</li>
+        <li onclick="showSection('invest-now')">🚀 Invest Now</li>
+        <li onclick="showSection('payouts')">💰 Payouts</li>
+        <li onclick="showSection('withdraw')">🏧 Withdraw</li>
+      </ul>
+
+      <li onclick="toggleDropdown(this)">
+        <div><i class="fas fa-user-cog"></i> User</div>
+        <i class="fas fa-chevron-right arrow"></i>
+      </li>
+      <ul class="dropdown">
+        <li onclick="showSection('edit-profile')">👤 Edit Profile</li>
+        <li onclick="showSection('referral')">🔗 Referral Code</li>
+        <li onclick="showSection('2fa')">🔐 2FA Auth</li>
+        <li onclick="showSection('change-password')">🔑 Change Password</li>
+      </ul>
+
+      <li onclick="toggleDropdown(this)">
+        <div><i class="fas fa-cogs"></i> System</div>
+        <i class="fas fa-chevron-right arrow"></i>
+      </li>
+      <ul class="dropdown">
+        <li onclick="showSection('transactions')">🧾 Transactions</li>
+        <li onclick="showSection('kyc')">📄 KYC</li>
+        <li onclick="showSection('tickets')">🎫 Support Tickets</li>
+      </ul>
+
+      <li onclick="showSection('logout')">
+        <div><i class="fas fa-sign-out-alt"></i> Logout</div>
+      </li>
+    </ul>
+  </div>
+
+  <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+  <div class="main">
+    <div id="invests" class="content-section active">
+      <h2 class="section-title">📥 Investment Records</h2>
+      <table>
+        <tr><th>User</th><th>Plan</th><th>Amount</th><th>Date</th></tr>
+        <tr><td>John</td><td>Gold</td><td>$1000</td><td>2025-06-01</td></tr>
+        <tr><td>Jane</td><td>Platinum</td><td>$5000</td><td>2025-06-02</td></tr>
+      </table>
+    </div>
+
+    <div id="invest-now" class="content-section">
+      <h2 class="section-title">🚀 Start New Investment</h2>
+      <p>Form to start a new investment plan (UI only).</p>
+    </div>
+
+    <div id="payouts" class="content-section">
+      <h2 class="section-title">💰 Payouts</h2>
+      <p>List of processed and pending payouts.</p>
+    </div>
+
+    <div id="withdraw" class="content-section">
+      <h2 class="section-title">🏧 Withdrawal Requests</h2>
+      <p>Manage user withdrawal requests here.</p>
+    </div>
+
+    <div id="edit-profile" class="content-section">
+      <h2 class="section-title">👤 Edit Profile</h2>
+      <p>Admin profile edit section (UI only).</p>
+    </div>
+
+    <div id="referral" class="content-section">
+      <h2 class="section-title">🔗 Referral Code</h2>
+      <p>Monitor and assign referral codes.</p>
+    </div>
+
+    <div id="2fa" class="content-section">
+      <h2 class="section-title">🔐 Two-Factor Authentication</h2>
+      <p>Setup and manage 2FA security.</p>
+    </div>
+
+    <div id="change-password" class="content-section">
+      <h2 class="section-title">🔑 Change Password</h2>
+      <p>Update your admin dashboard password.</p>
+    </div>
+
+    <div id="transactions" class="content-section">
+      <h2 class="section-title">🧾 Transactions</h2>
+      <table>
+        <tr><th>ID</th><th>User</th><th>Type</th><th>Amount</th><th>Status</th></tr>
+        <tr><td>#TX001</td><td>John</td><td>Deposit</td><td>$1000</td><td>Completed</td></tr>
+        <tr><td>#TX002</td><td>Jane</td><td>Withdraw</td><td>$300</td><td>Pending</td></tr>
+      </table>
+    </div>
+
+    <div id="kyc" class="content-section">
+      <h2 class="section-title">📄 KYC</h2>
+      <p>Review and approve submitted KYC documents.</p>
+    </div>
+
+    <div id="tickets" class="content-section">
+      <h2 class="section-title">🎫 Support Tickets</h2>
+      <p>Manage and respond to user support tickets.</p>
+    </div>
+
+    <div id="logout" class="content-section">
+      <h2 class="section-title">🚪 Logout</h2>
+      <p>You have been logged out (UI simulation).</p>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('active');
+    }
+
+    function toggleDropdown(element) {
+      const dropdown = element.nextElementSibling;
+      const arrow = element.querySelector('.arrow');
+
+      const isOpen = dropdown.style.display === 'block';
+      document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
+      document.querySelectorAll('.arrow').forEach(a => a.classList.remove('rotate'));
+
+      if (!isOpen) {
+        dropdown.style.display = 'block';
+        arrow.classList.add('rotate');
+      }
+    }
+
+    function showSection(id) {
+      document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+
+      // auto-close sidebar on mobile
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('active');
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+

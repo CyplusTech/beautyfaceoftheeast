@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edit Admin</title>
+  <!-- <link rel="stylesheet" href="/style/admin/admin-nav.css"> -->
+
+  <style>
+    /* Inline CSS for edit-admin */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      /* margin: auto auto auto 500px;  */
+      margin: 50px auto auto auto;
+      padding: 20px;
+      color: #333;
+      width: 40%;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+
+    }
+    h1 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    form {
+      max-width: 450px;
+      background: white;
+      padding: 25px 30px;
+      border-radius: 8px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+      margin-left: 50px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 18px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #007BFF;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 15px;
+      color: #007BFF;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-edit-wrapper">
+  <h1>Edit Admin</h1>
+  <form action="/admin/edit-admin/<%= admin._id %>" method="POST" novalidate>
+    <label for="fullName">Full Name</label>
+    <input type="text" id="fullName" name="fullName" required value="<%= admin.fullName %>" />
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required value="<%= admin.email %>" />
+
+    <label for="role">Role</label>
+    <select id="role" name="role" required>
+      <option value="admin" <%= admin.role === "admin" ? "selected" : "" %>>Admin</option>
+      <option value="superadmin" <%= admin.role === "superadmin" ? "selected" : "" %>>Superadmin</option>
+    </select>
+
+    <label for="password">New Password (leave blank to keep current)</label>
+    <input type="password" id="password" name="password" placeholder="Enter new password" minlength="6" />
+
+    <button type="submit">Update Admin</button>
+  </form>
+  <a href="/admin/manage-admins" class="back-link">← Back to Admin List</a>
+</div>
+</body>
+</html>

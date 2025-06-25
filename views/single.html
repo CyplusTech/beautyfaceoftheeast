@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= contestant.firstName %> <%= contestant.lastName %> | Contestant</title>
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f7f9fc;
+      color: #333;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      padding: 30px 25px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    }
+
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .image-wrapper {
+      flex: 0 0 180px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .image-wrapper img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      aspect-ratio: 1 / 1;
+    }
+
+    .details {
+      flex: 1;
+    }
+
+    .details h1 {
+      font-size: 2.4rem;
+      margin-bottom: 8px;
+      color: #222;
+    }
+
+    .details .serial-id {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 14px;
+      letter-spacing: 1.2px;
+    }
+
+    .votes {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #ff5733;
+      margin-bottom: 24px;
+    }
+
+    .btn-vote {
+      background-color: #ff5733;
+      color: white;
+      font-weight: 600;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.15rem;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 12px rgba(255, 87, 51, 0.4);
+      user-select: none;
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .btn-vote:hover {
+      background-color: #e04e2d;
+      box-shadow: 0 6px 14px rgba(224, 78, 45, 0.6);
+    }
+
+    .countdown-container {
+      background: #fef6f4;
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin-bottom: 30px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(255, 87, 51, 0.1);
+    }
+
+    .countdown-container h2 {
+      color: #ff5733;
+      font-weight: 700;
+      margin-bottom: 12px;
+      font-size: 1.5rem;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #222;
+    }
+
+    .countdown-item {
+      background: white;
+      padding: 12px 18px;
+      border-radius: 8px;
+      min-width: 60px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .countdown-item span {
+      display: block;
+      font-size: 1.1rem;
+      color: #777;
+      margin-top: 4px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .how-to-vote {
+      background: #fff8f6;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 10px rgba(255, 87, 51, 0.15);
+      margin-bottom: 30px;
+    }
+
+    .how-to-vote h3 {
+      color: #ff5733;
+      margin-bottom: 12px;
+      font-size: 1.6rem;
+    }
+
+    .how-to-vote ol {
+      padding-left: 20px;
+      font-size: 1.1rem;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      background: #25d366;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 1.1rem;
+      box-shadow: 0 6px 15px rgba(37, 211, 102, 0.5);
+      transition: background-color 0.3s ease;
+    }
+
+    .whatsapp-btn:hover {
+      background: #1ebe57;
+      box-shadow: 0 8px 18px rgba(30, 190, 87, 0.6);
+    }
+
+    .whatsapp-btn svg {
+      margin-right: 10px;
+      fill: white;
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .details h1 {
+        font-size: 2rem;
+      }
+
+      .votes {
+        font-size: 1.25rem;
+      }
+
+      .btn-vote {
+        width: 100%;
+        padding: 16px 0;
+        font-size: 1.2rem;
+      }
+
+      .countdown {
+        gap: 12px;
+        font-size: 1.2rem;
+      }
+
+      .countdown-item {
+        min-width: 50px;
+        padding: 10px 14px;
+      }
+
+      .how-to-vote ol {
+        font-size: 1rem;
+      }
+
+      .whatsapp-btn {
+        width: 100%;
+        justify-content: center;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <div class="image-wrapper">
+        <img src="<%= contestant.imageURL || '/images/contestant.jpg' %>" alt="<%= contestant.firstName %> <%= contestant.lastName %>" />
+      </div>
+
+      <div class="details">
+        <h1><%= contestant.firstName %> <%= contestant.lastName %></h1>
+        <div class="serial-id">Contestant ID: <%= contestant.serialId || contestant._id %></div>
+        <div class="votes">Total Votes: <%= contestant.votes || 0 %></div>
+        <a href="/vote/<%= contestant._id %>" class="btn-vote" id="voteBtn">Vote Now</a>
+      </div>
+    </div>
+
+    <div class="countdown-container">
+      <h2>Stage Two Ends In:</h2>
+      <div class="countdown" id="countdown">
+        <div class="countdown-item">
+          <div id="days">0</div>
+          <span>Days</span>
+        </div>
+        <div class="countdown-item">
+          <div id="hours">0</div>
+          <span>Hours</span>
+        </div>
+        <div class="countdown-item">
+          <div id="minutes">0</div>
+          <span>Minutes</span>
+        </div>
+        <div class="countdown-item">
+          <div id="seconds">0</div>
+          <span>Seconds</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-to-vote">
+      <h3>How to Vote</h3>
+      <ol>
+        <li>Click the "Vote Now" button above.</li>
+        <li>Log in or register if prompted.</li>
+        <li>Choose the number of votes you want to cast.</li>
+        <li>Complete payment through our secure payment gateway.</li>
+        <li>Your votes will be added instantly upon successful payment.</li>
+      </ol>
+    </div>
+
+    <a href="https://wa.me/1234567890" class="whatsapp-btn" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M20.52 3.48a11.64 11.64 0 00-16.44 0 11.64 11.64 0 00-3.32 8.24c0 2.3.77 4.44 2.28 6.17L2 22l4.26-1.38a11.6 11.6 0 005.14 1.2 11.64 11.64 0 008.23-3.32 11.62 11.62 0 003.33-8.22 11.62 11.62 0 00-3.74-8.01zm-8.38 15.8a9.68 9.68 0 01-4.96-1.36l-.36-.22-3.16 1.02 1.06-3.08-.24-.37a9.56 9.56 0 01-1.5-5.27c0-5.33 4.33-9.66 9.67-9.66a9.58 9.58 0 016.79 2.81 9.55 9.55 0 012.81 6.78 9.56 9.56 0 01-9.61 9.68zM16.11 14.6l-1.2-.56a.69.69 0 00-.63 0l-.56.28a5.57 5.57 0 01-2.58-2.58l.28-.56a.69.69 0 000-.63l-.56-1.2a.68.68 0 00-.84-.36 2.31 2.31 0 00-1.37 1.36c-.3.78-.22 1.48.22 2.03a6.14 6.14 0 004.66 4.66c.54.43 1.24.53 2.02.23a2.35 2.35 0 001.38-1.37.7.7 0 00-.35-.84z"/>
+      </svg>
+      Chat on WhatsApp
+    </a>
+
+  </div>
+
+  <script>
+    // Set the date/time when Stage Two ends (example: May 31, 2025 23:59:59)
+    const stageTwoEndDate = new Date('<%= stageTwoEndDate.toISOString() %>').getTime();
+
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = stageTwoEndDate - now;
+
+      if (distance < 0) {
+        daysEl.textContent = '0';
+        hoursEl.textContent = '0';
+        minutesEl.textContent = '0';
+        secondsEl.textContent = '0';
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      daysEl.textContent = days;
+      hoursEl.textContent = hours.toString().padStart(2, '0');
+      minutesEl.textContent = minutes.toString().padStart(2, '0');
+      secondsEl.textContent = seconds.toString().padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
